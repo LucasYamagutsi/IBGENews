@@ -1,5 +1,5 @@
 import React from 'react';
-// import './App.css';
+import './App.css';
 import News from './Components/News';
 import Favorites from './Components/Favorites';
 import { Route, Routes } from 'react-router-dom';

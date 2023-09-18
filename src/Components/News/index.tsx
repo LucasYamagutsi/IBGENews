@@ -60,13 +60,14 @@ function News() {
             src={news.items[0].imagens.image_intro}
             alt="Imagem da noticia"
           />
-          <p>Notícia mais recente</p>
+          <h3>Notícia mais recente</h3>
           <h2>{news.items[0].titulo}</h2>
           <p>{news.items[0].introducao}</p>
           <p>
             Publicado a {calculateData(news.items[0].data_publicacao)} dias atrás
           </p>
           <button onClick={() => handleButtonClick(0)}>Leia a notícia aqui</button>
+          <h3>Notícias recentes:</h3>
           <div>
             {news.items.slice(1).map((item, index) => (
               <div key={item.id}>
