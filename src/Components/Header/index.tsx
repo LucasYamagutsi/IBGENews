@@ -6,19 +6,25 @@ import "./Header.css";
 function Header() {
   const navigate = useNavigate();
 
-  const handleButtonClick = () => {
-    navigate("/favorites");
-  };
   return (
     <div id="headerDiv">
       <img src={trybeLogo} alt="Trybe Logo" />
       <h1 id="title">Trybe News</h1>
-      <button
-        onClick={handleButtonClick}
-        id="favoritesButton"
-      >
-        Favoritos
-      </button>
+      <div id="buttonsDiv">
+        <button
+          onClick={() => navigate("/")}
+          className="favoritesButton"
+        >
+          Home
+        </button>
+
+        <button
+          onClick={() => navigate("/favorites")}
+          className="favoritesButton"
+        >
+          Favoritos
+        </button>
+      </div>
     </div>
   );
 }

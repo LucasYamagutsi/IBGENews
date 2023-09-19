@@ -1,15 +1,12 @@
 import React, { useEffect } from "react";
 import useFetch from "../../Hooks/useFetch";
 import Header from "../Header";
-// import { useSelector, useDispatch } from "react-redux";
-// import { addToFavorites, removeFromFavorites } from "../../redux/actions/favoriteActions";
-
-type FavoriteState = number[]; 
 
 function News() {
-  const [favoriteNews, setFavoriteNews] = React.useState([]);
-  // const favoriteNews = useSelector((state: FavoriteState) => state);
-  // const dispatch = useDispatch();
+  const [favoriteNews, setFavoriteNews] = React.useState(() => {
+    const existingFavoriteNews = localStorage.getItem('favoriteNews');
+    return existingFavoriteNews ? JSON.parse(existingFavoriteNews) : [];
+  });
   const {news, isLoading, error} = useFetch(
     'https://servicodados.ibge.gov.br/api/v3/noticias/?qtd=100'
   );
@@ -18,6 +15,19 @@ function News() {
     window.open(news.items[index].link, "_blank");
   };
 
+  // const handleFavoriteClick = (id) => {
+  //   setFavoriteNews((prevFavoriteNews: any) => {
+  //     if (prevFavoriteNews.includes(id)) {
+  //       const updatedFavoriteNews = prevFavoriteNews.filter((item) => item !== id);
+  //       localStorage.setItem("favoriteNews", JSON.stringify(updatedFavoriteNews));
+  //       return updatedFavoriteNews;
+  //     } else {
+  //       const updatedFavoriteNews = [...prevFavoriteNews, id];
+  //       localStorage.setItem("favoriteNews", JSON.stringify(updatedFavoriteNews));
+  //       return updatedFavoriteNews;
+  //     }
+  //   });
+  // };
   const handleFavoriteClick = (id) => {
     setFavoriteNews((prevFavoriteNews: any) => {
       if (prevFavoriteNews.includes(id)) {
@@ -27,26 +37,28 @@ function News() {
       }
     });
   };
-  // const handleFavoriteClick = (id) => {
-  //   if (favoriteNews.includes(id)) {
-  //     dispatch(removeFromFavorites(id));
+  // useEffect(() => {
+  //   const existingFavoriteNews = localStorage.getItem("favoriteNews");
+  //   if (existingFavoriteNews) {
+  //     const parsedExistingFavoriteNews = JSON.parse(existingFavoriteNews);
+  //     const updatedFavoriteNews = [...parsedExistingFavoriteNews, ...favoriteNews];
+  //     localStorage.setItem("favoriteNews", JSON.stringify(updatedFavoriteNews));
   //   } else {
-  //     dispatch(addToFavorites(id));
+  //     localStorage.setItem("favoriteNews", JSON.stringify(favoriteNews));
   //   }
-  // };
-
+  // }, [favoriteNews]);
   useEffect(() => {
     localStorage.setItem("favoriteNews", JSON.stringify(favoriteNews));
   }, [favoriteNews]);
 
   const calculateData = (publishedData) => {
-    const dataAtual = new Date();
+    const currDate = new Date();
     const dateSliced = publishedData.split(" ");
     const [slicedDate, slicedHour] = dateSliced;
     const [day, month, year] = slicedDate.split("/");
     const [hour, minute, second] = slicedHour.split(":");
     const publishedDate = new Date(parseInt(year), parseInt(month) - 1, parseInt(day), parseInt(hour), parseInt(minute), parseInt(second));
-    const differenceInMilliseconds = dataAtual.getTime() - publishedDate.getTime();
+    const differenceInMilliseconds = currDate.getTime() - publishedDate.getTime();
     const differenceInDays = Math.floor(differenceInMilliseconds / (1000 * 60 * 60 * 24));
     return differenceInDays;
   };
@@ -67,6 +79,8 @@ function News() {
             Publicado a {calculateData(news.items[0].data_publicacao)} dias atrás
           </p>
           <button onClick={() => handleButtonClick(0)}>Leia a notícia aqui</button>
+          <button onClick={() => handleFavoriteClick(news.items[0].id)}>Favoritar</button>
+
           <h3>Notícias recentes:</h3>
           <div>
             {news.items.slice(1).map((item, index) => (
