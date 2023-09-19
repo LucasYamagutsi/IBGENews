@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import useFetch from "../../Hooks/useFetch";
 import Header from "../Header";
+import "./News.css";
 
 function News() {
   const [favoriteNews, setFavoriteNews] = React.useState(() => {
@@ -82,9 +83,9 @@ function News() {
           <button onClick={() => handleFavoriteClick(news.items[0].id)}>Favoritar</button>
 
           <h3>Notícias recentes:</h3>
-          <div>
+          <div id="cardsDiv">
             {news.items.slice(1).map((item, index) => (
-              <div key={item.id}>
+              <div key={item.id} className="cards">
                 <h2>{item.titulo}</h2>
                 <p>{item.introducao}</p>
                 <p>

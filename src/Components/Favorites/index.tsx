@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { NewsType } from "../../utils/types";
 import useFetch from "../../Hooks/useFetch";
 import Header from "../Header";
+import "../News/News.css"
 
 function Favorites() {
   const [filteredNews, setFilteredNews] = useState<Array<NewsType>>([]);
@@ -52,9 +53,9 @@ function Favorites() {
     <div>
       <Header />
       <h2>Notícias Favoritas</h2>
-      <div>
+      <div id="cardsDiv">
             {filteredNews.map((item, index) => (
-              <div key={item.id}>
+              <div key={item.id} className="cards">
                 <h2>{item.titulo}</h2>
                 <p>{item.introducao}</p>
                 <p>
