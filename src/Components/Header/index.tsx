@@ -9,7 +9,7 @@ function Header() {
   return (
     <div id="headerDiv">
       <img src={trybeLogo} alt="Trybe Logo" />
-      <h1 id="title">Trybe News</h1>
+      <h1 id="title">TRYBE NEWS</h1>
       <div id="buttonsDiv">
         <button
           onClick={() => navigate("/")}
