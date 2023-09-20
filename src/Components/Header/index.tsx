@@ -1,6 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import trybeLogo from "../../images/trybeLogo.jpg";
+import trybeLogo from "../../images/Logo.svg";
 import "./Header.css";
 
 function Header() {

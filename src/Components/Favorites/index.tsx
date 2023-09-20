@@ -14,7 +14,7 @@ function Favorites() {
 
   useEffect(() => {
     if (news.items) {
-      const filteredIdNews = news.items.filter((item) => favoriteNewsIds.includes(item.id));
+      const filteredIdNews = news.items.filter((item: any) => favoriteNewsIds.includes(item.id));
   
       if (JSON.stringify(filteredIdNews) !== JSON.stringify(filteredNews)) {
         setFilteredNews(filteredIdNews);
@@ -22,7 +22,7 @@ function Favorites() {
     }
   }, [favoriteNewsIds, news, filteredNews]); 
 
-  const calculateData = (publishedData) => {
+  const calculateData = (publishedData: string) => {
     const currDate = new Date();
     const dateSliced = publishedData.split(" ");
     const [slicedDate, slicedHour] = dateSliced;
@@ -33,7 +33,7 @@ function Favorites() {
     const differenceInDays = Math.floor(differenceInMilliseconds / (1000 * 60 * 60 * 24));
     return differenceInDays;
   };
-  const handleButtonClick = (index) => {
+  const handleButtonClick = (index: number) => {
     window.open(news.items[index].link, "_blank");
   };
 
@@ -42,7 +42,7 @@ function Favorites() {
     const favoriteNewsIds = favoriteNewsString ? JSON.parse(favoriteNewsString) : [];
     
     if (news.items) {
-      const filteredIdNews = news.items.filter((item) => favoriteNewsIds.includes(item.id));
+      const filteredIdNews = news.items.filter((item: any) => favoriteNewsIds.includes(item.id));
   
       if (JSON.stringify(filteredIdNews) !== JSON.stringify(filteredNews)) {
         setFilteredNews(filteredIdNews);

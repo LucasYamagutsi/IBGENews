@@ -59,7 +59,7 @@
     "mochawesome-report-generator": "^6.2.0",
     "stylelint": "14.16.1",
     "stylelint-order": "5.0.0",
-    "typescript": "^5.0.4",
+    "typescript": "^5.2.2",
     "vite": "^4.1.1",
     "vitest": "^0.30.1"
   }

@@ -1,7 +1,7 @@
 #headerDiv {
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: space-between;
   background-color: #0E0E0ED9;
   font-family: 'Poller One', cursive;
   width: 100%;
@@ -9,9 +9,11 @@
 #title {
   font-size: 3rem;
   color: white;
+  margin-left: 10rem;
 }
 #buttonsDiv {
   display: flex;
+  margin-right: 5rem;
 }
 .favoritesButton{
   font-family: 'Poller One', cursive;
