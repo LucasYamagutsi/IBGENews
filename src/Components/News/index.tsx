@@ -5,14 +5,13 @@ import notFav from "../../images/notFav.svg"
 import fav from "../../images/fav.svg"
 import teste from "../../images/teste.jpg"
 import "./News.css";
-// import MiddleBar from "../MiddleBar";
 
 function News() {
   const [favoriteNews, setFavoriteNews] = React.useState(() => {
     const existingFavoriteNews = localStorage.getItem('favoriteNews');
     return existingFavoriteNews ? JSON.parse(existingFavoriteNews) : [];
   });
-  const [filterSelected, setFilterSelected] = React.useState("Mais Recentes");
+  const [filterSelected, setFilterSelected] = React.useState("recent");
   const {news, isLoading, error} = useFetch(
     'https://servicodados.ibge.gov.br/api/v3/noticias/?qtd=100'
   );
@@ -21,19 +20,6 @@ function News() {
     window.open(news.items[index].link, "_blank");
   };
 
-  // const handleFavoriteClick = (id) => {
-  //   setFavoriteNews((prevFavoriteNews: any) => {
-  //     if (prevFavoriteNews.includes(id)) {
-  //       const updatedFavoriteNews = prevFavoriteNews.filter((item) => item !== id);
-  //       localStorage.setItem("favoriteNews", JSON.stringify(updatedFavoriteNews));
-  //       return updatedFavoriteNews;
-  //     } else {
-  //       const updatedFavoriteNews = [...prevFavoriteNews, id];
-  //       localStorage.setItem("favoriteNews", JSON.stringify(updatedFavoriteNews));
-  //       return updatedFavoriteNews;
-  //     }
-  //   });
-  // };
   const handleFavoriteClick = (id: number) => {
     setFavoriteNews((prevFavoriteNews: any) => {
       if (prevFavoriteNews.includes(id)) {
@@ -45,19 +31,9 @@ function News() {
   };
 
   const handleTabClick = (tabName: any) => {
-    setFilterSelected(tabName); // Update the selected tab when clicked
+    setFilterSelected(tabName);
   };
 
-  // useEffect(() => {
-  //   const existingFavoriteNews = localStorage.getItem("favoriteNews");
-  //   if (existingFavoriteNews) {
-  //     const parsedExistingFavoriteNews = JSON.parse(existingFavoriteNews);
-  //     const updatedFavoriteNews = [...parsedExistingFavoriteNews, ...favoriteNews];
-  //     localStorage.setItem("favoriteNews", JSON.stringify(updatedFavoriteNews));
-  //   } else {
-  //     localStorage.setItem("favoriteNews", JSON.stringify(favoriteNews));
-  //   }
-  // }, [favoriteNews]);
   useEffect(() => {
     localStorage.setItem("favoriteNews", JSON.stringify(favoriteNews));
   }, [favoriteNews]);
@@ -74,7 +50,6 @@ function News() {
     return differenceInDays;
   };
 
-  // const isFavorite = (id: number) => favoriteNews.includes(id);
 
   return (
     <div>
@@ -116,43 +91,77 @@ function News() {
             </div>
           </section>
 
-          {/* <h3>Notícias recentes:</h3> */}
-          {/* <MiddleBar /> */}
           <div id="middleBar">
-            <button>Mais Recentes</button>
-            <button>Favoritas</button>
+            <button onClick={() => handleTabClick("recent")}>Mais Recentes</button>
+            <button onClick={() => handleTabClick("favorites")}>Favoritas</button>
           </div>  
 
           <div id="cardsDiv">
-            {news.items.slice(1).map((item: any, index: number) => (
-              <div key={item.id} className="cards">
-                <div id="content1">
-                  <h2>{item.titulo}</h2>
-                  <p>{item.introducao}</p>
-                </div>
-                <div id="content2">
-                  <p>
-                    {calculateData(item.data_publicacao)} dias atrás
-                  </p>
+            {filterSelected === "recent" ? (
+              news.items.slice(1).map((item: any, index: number) => (
+                <div key={item.id} className="cards">
+                  <div id="content1">
+                    <h2>{item.titulo}</h2>
+                    <p>{item.introducao}</p>
+                  </div>
+                  <div id="content2">
+                    <p>
+                      {calculateData(item.data_publicacao)} dias atrás
+                    </p>
+                    <button
+                      onClick={() => handleButtonClick(index + 1)}
+                      className="redirectButton"
+                    >
+                      Leia a notícia aqui
+                    </button>
+                  </div>
                   <button
-                    onClick={() => handleButtonClick(index + 1)}
-                    className="redirectButton"
+                    onClick={() => handleFavoriteClick(item.id)}
+                    id="favoriteButton"
                   >
-                    Leia a notícia aqui
+                    {favoriteNews.includes(item.id) ? (
+                      <img src={fav} alt="Favoritado" />
+                    ) : (
+                      <img src={notFav} alt="Não Favoritado" />
+                    )}
                   </button>
                 </div>
-                <button
-                  onClick={() => handleFavoriteClick(item.id)}
-                  id="favoriteButton"
-                >
-                  {favoriteNews.includes(item.id) ? (
-                    <img src={fav} alt="Favoritado" />
-                  ) : (
-                    <img src={notFav} alt="Não Favoritado" />
-                  )}
-                </button>
-              </div>
-            ))}
+              ))
+            ) : (
+              favoriteNews.map((id: number, index: number) => {
+                const item = news.items.find((newsItem: any) => newsItem.id === id);
+                if (!item) return null;
+                return (
+                  <div key={item.id} className="cards">
+                  <div id="content1">
+                    <h2>{item.titulo}</h2>
+                    <p>{item.introducao}</p>
+                  </div>
+                  <div id="content2">
+                    <p>
+                      {calculateData(item.data_publicacao)} dias atrás
+                    </p>
+                    <button
+                      onClick={() => handleButtonClick(index + 1)}
+                      className="redirectButton"
+                    >
+                      Leia a notícia aqui
+                    </button>
+                  </div>
+                  <button
+                    onClick={() => handleFavoriteClick(item.id)}
+                    id="favoriteButton"
+                  >
+                    {favoriteNews.includes(item.id) ? (
+                      <img src={fav} alt="Favoritado" />
+                    ) : (
+                      <img src={notFav} alt="Não Favoritado" />
+                    )}
+                  </button>
+                </div>
+                );
+              })
+            )}
           </div>
         </div>
       )}

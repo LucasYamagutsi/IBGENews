@@ -10,7 +10,7 @@ function Header() {
     <div id="headerDiv">
       <img src={trybeLogo} alt="Trybe Logo" />
       <h1 id="title">TRYBE NEWS</h1>
-      <div id="buttonsDiv">
+      {/* <div id="buttonsDiv">
         <button
           onClick={() => navigate("/")}
           className="favoritesButton"
@@ -24,7 +24,7 @@ function Header() {
         >
           Favoritos
         </button>
-      </div>
+      </div> */}
     </div>
   );
 }
