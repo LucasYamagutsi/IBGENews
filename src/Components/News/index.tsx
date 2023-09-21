@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import useFetch from "../../Hooks/useFetch";
 import Header from "../Header";
-import notFav from "../../images/notFav.svg"
-import fav from "../../images/fav.svg"
+import notFav from "../../images/notFav.svg";
+import fav from "../../images/fav.svg";
+import boxes from "../../images/boxes.svg";
+import notFav2 from "../../images/notFav2.svg";
 import "./News.css";
 
 function News() {
@@ -82,7 +84,7 @@ function News() {
                   {favoriteNews.includes(news.items[0].id) ? (
                       <img src={fav} alt="Favoritado" />
                     ) : (
-                      <img src={notFav} alt="Não Favoritado" />
+                      <img src={notFav2} alt="Não Favoritado" />
                   )}
                 </button>
               </div>
@@ -106,19 +108,22 @@ function News() {
           </section>
 
           <div id="middleBar">
-          <button
-              className={filterSelected === "recent" ? "selected" : "notSelected"}
-              onClick={() => handleTabClick("recent")}
-            >
-              Mais Recentes
-            </button>
-            <button
-              className={filterSelected === "favorite" ? "selected" : "notSelected"}
-              id="favoriteFilter"
-              onClick={() => handleTabClick("favorite")}
-            >
-              Favoritas
-            </button>
+            <section>
+              <button
+                  className={filterSelected === "recent" ? "selected" : "notSelected"}
+                  onClick={() => handleTabClick("recent")}
+                >
+                  Mais Recentes
+                </button>
+                <button
+                  className={filterSelected === "favorite" ? "selected" : "notSelected"}
+                  id="favoriteFilter"
+                  onClick={() => handleTabClick("favorite")}
+                >
+                  Favoritas
+                </button>
+            </section>
+            <img src={ boxes } alt="boxes" />
           </div>  
 
           <div id="cardsDiv">
