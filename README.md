@@ -27,3 +27,14 @@ npm install
 npm run dev
 ```
 A aplicação abrirá no http://localhost:3000/
+
+## Testes
+
+1. Para rodar os testes execute:
+```bash
+npm run test
+```
+2. Para rodar a cobertura de testes execute:
+```bash
+npm run coverage
+```
