@@ -1,17 +1,18 @@
-import React, { useEffect } from "react";
+import { useEffect, useState } from "react";
 import useFetch from "../../Hooks/useFetch";
 import Header from "../Header";
 import notFav from "../../images/notFav.svg"
 import fav from "../../images/fav.svg"
-import teste from "../../images/teste.jpg"
 import "./News.css";
 
 function News() {
-  const [favoriteNews, setFavoriteNews] = React.useState(() => {
+  const [favoriteNews, setFavoriteNews] = useState(() => {
     const existingFavoriteNews = localStorage.getItem('favoriteNews');
     return existingFavoriteNews ? JSON.parse(existingFavoriteNews) : [];
   });
-  const [filterSelected, setFilterSelected] = React.useState("recent");
+  const [filterSelected, setFilterSelected] = useState("recent");
+  const [visibleNews, setVisibleNews] = useState(10);
+  const [visibleFavoriteNews, setVisibleFavoriteNews] = useState(9);
   const {news, isLoading, error} = useFetch(
     'https://servicodados.ibge.gov.br/api/v3/noticias/?qtd=100'
   );
@@ -32,6 +33,15 @@ function News() {
 
   const handleTabClick = (tabName: any) => {
     setFilterSelected(tabName);
+  };
+
+  const handleShowMoreClick = () => {
+    // Aumenta o número de notícias visíveis em 9 (ou qualquer quantidade desejada)
+    if (filterSelected === "recent") {
+      setVisibleNews((prevCount) => prevCount + 9);
+    } else if (filterSelected === "favorite") {
+      setVisibleFavoriteNews((prevCount) => prevCount + 9);
+    }
   };
 
   useEffect(() => {
@@ -57,11 +67,12 @@ function News() {
       {news.items && news.items.length > 0 && (
         <div>
           <section id="mostRecentNews">
+          {news.items[0].imagens && (
             <img
-              // src={news.items[0].imagens.image_intro}
-              src={teste}
-              alt="Imagem da noticia"
+              src={news.items[0].imagens.image_intro}
+              alt="Imagem da notícia"
             />
+          )}
             <div id="infoFirstNews">
               <div id="firstPartNews">
                 <h3>Notícia mais recente</h3>
@@ -92,19 +103,30 @@ function News() {
           </section>
 
           <div id="middleBar">
-            <button onClick={() => handleTabClick("recent")}>Mais Recentes</button>
-            <button onClick={() => handleTabClick("favorites")}>Favoritas</button>
+          <button
+              className={filterSelected === "recent" ? "selected" : "notSelected"}
+              onClick={() => handleTabClick("recent")}
+            >
+              Mais Recentes
+            </button>
+            <button
+              className={filterSelected === "favorite" ? "selected" : "notSelected"}
+              id="favoriteFilter"
+              onClick={() => handleTabClick("favorite")}
+            >
+              Favoritas
+            </button>
           </div>  
 
           <div id="cardsDiv">
             {filterSelected === "recent" ? (
-              news.items.slice(1).map((item: any, index: number) => (
+              news.items.slice(1, visibleNews).map((item: any, index: number) => (
                 <div key={item.id} className="cards">
-                  <div id="content1">
+                  <div className="content1">
                     <h2>{item.titulo}</h2>
                     <p>{item.introducao}</p>
                   </div>
-                  <div id="content2">
+                  <div className="content2">
                     <p>
                       {calculateData(item.data_publicacao)} dias atrás
                     </p>
@@ -117,7 +139,7 @@ function News() {
                   </div>
                   <button
                     onClick={() => handleFavoriteClick(item.id)}
-                    id="favoriteButton"
+                    className="favoriteButton"
                   >
                     {favoriteNews.includes(item.id) ? (
                       <img src={fav} alt="Favoritado" />
@@ -127,17 +149,19 @@ function News() {
                   </button>
                 </div>
               ))
+            ) : favoriteNews.length === 0 ? (
+              <h1 id="noneFavoriteNews">Você ainda não tem notícias favoritas.</h1>
             ) : (
-              favoriteNews.map((id: number, index: number) => {
+              favoriteNews.slice(0, visibleFavoriteNews).map((id: number, index: number) => {
                 const item = news.items.find((newsItem: any) => newsItem.id === id);
                 if (!item) return null;
                 return (
                   <div key={item.id} className="cards">
-                  <div id="content1">
+                  <div className="content1">
                     <h2>{item.titulo}</h2>
                     <p>{item.introducao}</p>
                   </div>
-                  <div id="content2">
+                  <div className="content2">
                     <p>
                       {calculateData(item.data_publicacao)} dias atrás
                     </p>
@@ -150,7 +174,7 @@ function News() {
                   </div>
                   <button
                     onClick={() => handleFavoriteClick(item.id)}
-                    id="favoriteButton"
+                    className="favoriteButton"
                   >
                     {favoriteNews.includes(item.id) ? (
                       <img src={fav} alt="Favoritado" />
@@ -163,6 +187,17 @@ function News() {
               })
             )}
           </div>
+          {(filterSelected === "recent" && visibleNews < news.items.length) ||
+          (filterSelected === "favorite" && visibleFavoriteNews < favoriteNews.length) ? (
+            <div id="showMoreDiv">
+              <button
+                onClick={handleShowMoreClick}
+                id="showMoreButton"
+              >
+                Mais Notícias
+              </button>
+            </div>
+          ) : null}
         </div>
       )}
       {isLoading && <p>Loading...</p>}
