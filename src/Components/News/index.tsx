@@ -36,7 +36,6 @@ function News() {
   };
 
   const handleShowMoreClick = () => {
-    // Aumenta o número de notícias visíveis em 9 (ou qualquer quantidade desejada)
     if (filterSelected === "recent") {
       setVisibleNews((prevCount) => prevCount + 9);
     } else if (filterSelected === "favorite") {
@@ -76,7 +75,10 @@ function News() {
             <div id="infoFirstNews">
               <div id="firstPartNews">
                 <h3>Notícia mais recente</h3>
-                <button onClick={() => handleFavoriteClick(news.items[0].id)}>
+                <button
+                  onClick={() => handleFavoriteClick(news.items[0].id)}
+                  data-testid="favoriteButton"
+                >
                   {favoriteNews.includes(news.items[0].id) ? (
                       <img src={fav} alt="Favoritado" />
                     ) : (
@@ -95,6 +97,7 @@ function News() {
                 <button
                   onClick={() => handleButtonClick(0)}
                   className="redirectButton"
+                  data-testid="redirectButton"
                 >
                   Leia a notícia aqui
                 </button>
