@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import useFetch from "../../Hooks/useFetch";
 import Header from "../Header";
-import notFav from "../../images/notFav.svg";
 import fav from "../../images/fav.svg";
-import boxes from "../../images/boxes.svg";
+import notFav from "../../images/notFav.svg";
 import notFav2 from "../../images/notFav2.svg";
+import boxes from "../../images/boxes.svg";
 import "./News.css";
 
 function News() {
@@ -33,7 +33,7 @@ function News() {
     });
   };
 
-  const handleTabClick = (tabName: any) => {
+  const handleFilterClick = (tabName: any) => {
     setFilterSelected(tabName);
   };
 
@@ -68,12 +68,12 @@ function News() {
       {news.items && news.items.length > 0 && (
         <div>
           <section id="mostRecentNews">
-          {news.items[0].imagens && (
-            <img
-              src={news.items[0].imagens.image_intro}
-              alt="Imagem da notícia"
-            />
-          )}
+            {news.items[0].imagens && (
+              <img
+                src={news.items[0].imagens.image_intro}
+                alt="Imagem da notícia"
+              />
+            )}
             <div id="infoFirstNews">
               <div id="firstPartNews">
                 <h3>Notícia mais recente</h3>
@@ -111,14 +111,14 @@ function News() {
             <section>
               <button
                   className={filterSelected === "recent" ? "selected" : "notSelected"}
-                  onClick={() => handleTabClick("recent")}
+                  onClick={() => handleFilterClick("recent")}
                 >
                   Mais Recentes
                 </button>
                 <button
                   className={filterSelected === "favorite" ? "selected" : "notSelected"}
                   id="favoriteFilter"
-                  onClick={() => handleTabClick("favorite")}
+                  onClick={() => handleFilterClick("favorite")}
                 >
                   Favoritas
                 </button>

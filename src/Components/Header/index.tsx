@@ -1,9 +1,8 @@
 import React from "react";
-import trybeLogo from "../../images/Logo.svg";
+import trybeLogo from "../../images/logo.svg";
 import "./Header.css";
 
 function Header() {
-
   return (
     <div id="headerDiv">
       <img src={trybeLogo} alt="Trybe Logo" />
